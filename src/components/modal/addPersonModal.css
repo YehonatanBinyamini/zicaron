@@ -1,0 +1,120 @@
+/* AddPersonModal.css */
+
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .modal-content {
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    text-align: right;
+  }
+  
+  .h2-modal {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .label-modal {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .input-modal,
+  select {
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    text-align: right;
+    border-radius: 4px;
+    direction: rtl;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+  
+  .add-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #3498db;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+  
+  .add-button:hover {
+    background-color: #ffffff;
+    color: #3498db;
+  }
+  
+  .add-button:active {
+    transform: translateY(2px);
+  }
+  
+  .add-button:disabled {
+    background-color: #bdc3c7;
+    border-color: #bdc3c7;
+    color: #ecf0f1;
+    cursor: not-allowed;
+  }
+  
+  .checkbox-container{
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: row-reverse;
+  }
+
+  .selects-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  
+  .modal-select {
+    display: flex;
+    width: 200px;
+    height: 35px;
+    font-size: 14px;
+    text-align: right;
+  }  
+
+  .input-year-modal{
+    width: 184px;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: right;
+    direction: rtl;
+    font-weight: 500;
+  }
+  .error{
+    color: red;
+  }
+
+  
