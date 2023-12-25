@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+src/db/firebase.js
+
 dist
 dist-ssr
 *.local
@@ -23,4 +25,3 @@ dist-ssr
 *.sln
 *.sw?
 
-/src/db
