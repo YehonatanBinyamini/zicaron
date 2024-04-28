@@ -260,16 +260,18 @@ export function filterListBySearch(niftarArray, searchValue) {
 
     // Check if all search words are included in the niftar object
     const isMatch = searchWords.every((word) =>
-      Object.values(niftar).some((value) => {
-        if (typeof value === "string" || value === "") {
-          // Convert value to lowercase for case-insensitive comparison
-          const lowercasedValue = value.toLowerCase();
-          // Check if the word is included in the value
-          return lowercasedValue.includes(word);
-        }
-        return false;
-      })
-    );
+  Object.entries(niftar).some(([key, value]) => {
+    // Exclude searching in niftar.id
+    if (key !== "id" && (typeof value === "string" || value === "")) {
+      // Convert value to lowercase for case-insensitive comparison
+      const lowercasedValue = value.toLowerCase();
+      // Check if the word is included in the value
+      return lowercasedValue.includes(word.toLowerCase());
+    }
+    return false;
+  })
+);
+
 
     if (isMatch) {
       if (!result[month]) {

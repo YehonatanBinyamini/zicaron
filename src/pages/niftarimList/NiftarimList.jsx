@@ -40,16 +40,10 @@ export default function NiftarimList() {
   
 
   const handleSearchChange = (value) => {
-    const firstCharCode = value.charCodeAt(0);
-    const isInEnglish = (firstCharCode >= 65 && firstCharCode <= 90) || (firstCharCode >= 97 && firstCharCode <= 122);
-        if (!isInEnglish) {
-          setSearchValue(value);
-          const result = filterListBySearch(niftarArray, value)
-          setFilteredNiftarim(getNiftarimObjects(result))
-        }
-    // setSearchValue(value);
+    setSearchValue(value);
     // setFilteredNiftarim(getNiftarimObjects({תשרי: niftarim['תשרי']}))
-    
+    const result = filterListBySearch(niftarArray, value)
+      setFilteredNiftarim(getNiftarimObjects(result))
     };
 
   const handleSearchClick = () => {
