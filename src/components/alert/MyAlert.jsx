@@ -7,7 +7,7 @@ const MyAlert = ({ backgroundColor, title, message }) => {
       severity="info"
       variant="filled"
       style={{
-        position: 'absolute',
+        position: 'fixed',
         top: '100px',
         right: '10px',
         margin: '16px',

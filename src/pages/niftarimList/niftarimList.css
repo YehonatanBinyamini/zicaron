@@ -111,3 +111,75 @@ h3 {
   color: #ecf0f1;
   cursor: not-allowed;
 }
+
+.edit-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 80px;
+  height: 40px;  
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  color: #ffffff;
+  background-color: #4CAF50;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  margin-left: 10px;
+}
+
+/* Hover State */
+.edit-button:hover {
+  background-color: #ffffff;
+  color: #45a049;
+}
+
+.delete-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  width: 80px;
+  height: 40px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #FF6347;
+  border-radius: 10px;
+  color: #ffffff;
+  background-color: #FF6347;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  margin-left: 10px;
+}
+
+/* Hover State */
+.delete-button:hover {
+  background-color: #ffffff;
+  color: #FF5733;
+}
+
+.add-and-search{
+  display: flex;
+  
+  /* grid-template-columns: 3fr 4fr; */
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 6px;
+}
+
+
+.buttons-position {
+  display: none; 
+  position: absolute;
+  transition: opacity 0.3s; 
+}
+
+.labels-name:hover .buttons-position {
+  display: flex; /* Show the buttons when hovering over .labels-name */
+  opacity: 1; /* Ensure the buttons are fully visible */
+  align-items: left;
+  justify-content: flex-start;
+}

@@ -53,7 +53,13 @@ export default function Day({ heDate, enDate, isDay, today, events }) {
       {azcaraToday && azcaraToday.length > 0 && (
         <>
           <img className="candleImg" src={candle} alt={"candle"} />
-          <div className="tooltip">{todayObjs && todayObjs.map(item => item.tooltipString())}</div>
+          <div className="tooltip">
+            {todayObjs && todayObjs.map((item, index) => (
+              <React.Fragment key={index}>
+                <label>{item.tooltipString()}</label>
+              </React.Fragment>
+            ))}
+          </div>
         </>
         )}
         </div>

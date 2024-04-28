@@ -1,10 +1,11 @@
 class Niftar {
-    constructor(firstName, lastName, parentsName, isMale, deathDate){
+    constructor(firstName, lastName, parentsName, isMale, deathDate, id){
         this.firstName = firstName; 
         this.lastName = lastName; 
         this.parentsName = parentsName; 
         this.isMale = isMale; 
         this.deathDate = deathDate;
+        this.id = id;
     }
 
     toString(){
@@ -27,6 +28,9 @@ class Niftar {
         return `${this.isMale ? "בן" : "בת"} ${this.parentsName} ז"ל`;
     }
 
+    setId(id){
+        this.id = id;
+    }
 }
 
 export default Niftar;

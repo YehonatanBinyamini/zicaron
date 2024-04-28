@@ -1,11 +1,11 @@
 // AddPersonModal.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import './AddPersonModal.css';
 import { hebrewMonths, hebrewLetters } from '../../assets/helpers';
 import { niftarimActions } from '../../store/niftarim';
 import { useDispatch } from 'react-redux';
-import { addToFireStore } from '../../db/firebase';
+import { addToFireStore, deleteFromFirestore, updateDocInFirestore } from '../../db/firebase';
 
 
 const customStyles = {
@@ -13,17 +13,30 @@ const customStyles = {
   content: {},
 };
 
-const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [parentsName, setParentsName] = useState('');
-  const [isMale, setIsMale] = useState(true);
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [year, setYear] = useState('');
+const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson, title, item }) => {
+  const [firstName, setFirstName] = useState(item && item.firstName ? item.firstName : '');
+  const [lastName, setLastName] = useState(item && item.lastName ? item.lastName : '');
+  const [parentsName, setParentsName] = useState(item && item.parentsName ? item.parentsName : '');
+  const [isMale, setIsMale] = useState(item ? item.isMale : true);
+  const [selectedMonth, setSelectedMonth] = useState(item && item.deathDate ? item.deathDate.month : '');
+  const [selectedDate, setSelectedDate] = useState(item && item.deathDate ? item.deathDate.date : '');
+  const [year, setYear] = useState(item && item.deathDate ? item.deathDate.year : '');
+  const [id, setId] = useState(item && item.id ? item.id : '');
   const [errorMessage, setErrorMessage] = useState('')
   const dispatch = useDispatch();
     
+  useEffect(() => {
+    // Update state when the 'item' prop changes
+    setFirstName(item && item.firstName ? item.firstName : '');
+    setLastName(item && item.lastName ? item.lastName : '');
+    setParentsName(item && item.parentsName ? item.parentsName : '');
+    setIsMale(item ? item.isMale : true);
+    setSelectedMonth(item && item.deathDate ? item.deathDate.month : '');
+    setSelectedDate(item && item.deathDate ? item.deathDate.date : '');
+    setYear(item && item.deathDate ? item.deathDate.year : '');
+    setId(item && item.id ? item.id : '');
+  }, [item]);
+
   const contentIsValid = () => {
     if(firstName.length === 0){
         setErrorMessage("שם פרטי הוא שדה חובה")
@@ -44,7 +57,7 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson }) => {
     return true;
   }
 
-  const handleAddPerson = () => {
+  const handleAddPerson = async () => {
    
       if (contentIsValid()){
           const deathDate = {
@@ -53,11 +66,24 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson }) => {
               date: selectedDate,
             };
             // console.log('Adding person:', newNiftar);
+            if (id){ 
+              closeModalAndResetInputs(); 
+              const editedNiftar = { firstName, lastName, parentsName, deathDate, isMale, id};
+              updateDocInFirestore(id, editedNiftar);
+              dispatch(niftarimActions.updateNiftar({id, editedNiftar}));
+              onAddPerson(editedNiftar);
+            } else {
             const newNiftar = { firstName, lastName, parentsName, deathDate, isMale };
-            onAddPerson(newNiftar);
-            dispatch(niftarimActions.addNiftar(newNiftar));
-            addToFireStore(newNiftar);
-            closeModalAndResetInputs();
+            try{
+              closeModalAndResetInputs();
+              const newId = await addToFireStore(newNiftar);
+              const niftarObject = {...newNiftar, id: newId}
+              dispatch(niftarimActions.addNiftar(niftarObject));
+              onAddPerson(niftarObject);
+            } catch(e){
+              console.log('Error: ',e)
+            }
+          }
     }
   };
 
@@ -70,6 +96,7 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson }) => {
         setSelectedDate("")
         setSelectedMonth("")
         setYear("")
+        setErrorMessage("")
   }
 
   return (
@@ -82,7 +109,7 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson }) => {
       overlayClassName="modal-overlay"
     >
       <div className="modal-content">
-        <h2 className='h2-modal'>הוספת אזכרה</h2>
+        <h2 className='h2-modal'>{title}</h2>
         <label className='label-modal'>שם פרטי</label>
         <input className='input-modal' type="text" value={firstName} tabIndex="1" onChange={(e) => {setFirstName(e.target.value); setErrorMessage('')}} />
 

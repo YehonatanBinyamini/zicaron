@@ -15,8 +15,8 @@ export const monthOrder = {
 
 const holidays = {
   "טו בשבט": true,
-  'ל״ג בעומר': true,
-  "פורים": true,
+  "ל״ג בעומר": true,
+  פורים: true,
   "פורים קטן": true,
   "צום גדליה": true,
   "שמיני עצרת": true,
@@ -30,13 +30,13 @@ const holidays = {
   "פסח שני": true,
   "יום ירושלים": true,
   "ערב שבועות": true,
-  "שבועות": true,
+  שבועות: true,
   "טו באב": true,
   "ערב סוכות": true,
   "ערב פסח": true,
   "תשעה באב": true,
   "ערב ראש השנה": true,
-}
+};
 
 function getTimeString(date) {
   const dateObject = new Date(date);
@@ -49,130 +49,139 @@ function getTimeString(date) {
 export function setEvents(events) {
   if (events.length === 0) return null;
 
-  const newEvents = events.map((event) => {
-   
-     if (event.hebrew === "פרשת קורח") {
-      return {
-        description: 'קרח'
-      };
-    }  
-    else if (event.category === "parashat") {
-      return {
-        description: event.hebrew.split(" ").slice(1).join(" "),
-      };
-    } else if (holidays[event.hebrew]) {
-      return {
-        description: event.hebrew
-      };
-    } else if (event.hebrew === "עשרה בטבת") {
-      return {
-        description: "צום י' בטבת"
-      };
-    } else if (event.hebrew === "שבת שקלים") {
-      return {
-        description: "שקלים"
-      };
-    } else if (event.hebrew === "שבת זכור") {
-      return {
-        description: "זכור"
-      };
-    } else if (event.hebrew === "ערב תשעה באב") {
-      return {
-        description: "ערב תשעה־באב"
-      };
-    } else if (event.hebrew === "שבת פרה") {
-      return {
-        description: "פרה"
-      };
-    } else if (event.hebrew === "שבת החדש") {
-      return {
-        description: "החודש"
-      };
-    } else if (event.hebrew === "שבת שירה") {
-      return {
-        description: "שירה"
-      };
-    } else if (event.hebrew === "צום תמוז") {
-      return {
-        description: 'צום י"ז בתמוז'
-      };
-    } else if (event.hebrew === "יום כפור") {
-      return {
-        description: 'יוה"כ'
-      };
-    } else if (event.hebrew === "ערב יום כפור") {
-      return {
-        description: 'ערב יוה"כ'
-      };
-    } else if (event.hebrew === "ערב פורים") {
-      return {
-        description: 'ערב־פורים'
-      };
-    } else if (event.hebrew === "תענית אסתר") {
-      return {
-        description: 'תענית־אסתר'
-      };
-    } else if (event.hebrew === "חנוכה: א' נר") {
+  const newEvents = events
+    .map((event) => {
+      if (event.hebrew === "פרשת קורח") {
+        return {
+          description: "קרח",
+        };
+      } else if (event.category === "parashat") {
+        return {
+          description: event.hebrew.split(" ").slice(1).join(" "),
+        };
+      } else if (holidays[event.hebrew]) {
+        return {
+          description: event.hebrew,
+        };
+      } else if (event.hebrew === "עשרה בטבת") {
+        return {
+          description: "צום י' בטבת",
+        };
+      } else if (event.hebrew === "שבת שקלים") {
+        return {
+          description: "שקלים",
+        };
+      } else if (event.hebrew === "שבת זכור") {
+        return {
+          description: "זכור",
+        };
+      } else if (event.hebrew === "ערב תשעה באב") {
+        return {
+          description: "ערב תשעה־באב",
+        };
+      } else if (event.hebrew === "שבת פרה") {
+        return {
+          description: "פרה",
+        };
+      } else if (event.hebrew === "שבת החדש") {
+        return {
+          description: "החודש",
+        };
+      } else if (event.hebrew === "שבת שירה") {
+        return {
+          description: "שירה",
+        };
+      } else if (event.hebrew === "צום תמוז") {
+        return {
+          description: 'צום י"ז בתמוז',
+        };
+      } else if (event.hebrew === "יום כפור") {
+        return {
+          description: 'יוה"כ',
+        };
+      } else if (event.hebrew === "ערב יום כפור") {
+        return {
+          description: 'ערב יוה"כ',
+        };
+      } else if (event.hebrew === "ערב פורים") {
+        return {
+          description: "ערב־פורים",
+        };
+      } else if (event.hebrew === "תענית אסתר") {
+        return {
+          description: "תענית־אסתר",
+        };
+      } else if (event.hebrew === "חנוכה: א' נר") {
+        return null;
+      } else if (
+        event.hebrew.includes("חנוכה") &&
+        (event.hebrew.includes("נרות") || event.hebrew.includes("יום ח"))
+      ) {
+        return {
+          description: "חנוכה",
+        };
+      } else if (
+        event.hebrew.includes("חנוכה") &&
+        (event.hebrew.includes("נר") || event.hebrew.includes("יום ח"))
+      ) {
+        return {
+          description: "ערב חנוכה",
+        };
+      } else if (event.hebrew.includes("פסח") && event.hebrew.includes(")")) {
+        return {
+          description: 'חוה"מ פסח',
+        };
+      } else if (event.hebrew.includes("פסח") && event.hebrew.includes("א")) {
+        return {
+          description: "פסח",
+        };
+      } else if (event.hebrew.includes("פסח") && event.hebrew.includes("ז")) {
+        return {
+          description: "שביעי של פסח",
+        };
+      } else if (
+        event.hebrew.includes("ראש השנה") &&
+        !event.hebrew.includes("בהמה")
+      ) {
+        return {
+          description: "ראש השנה",
+        };
+      } else if (event.hebrew.includes("סוכות") && event.hebrew.includes("ז")) {
+        return {
+          description: "הושענא רבה",
+        };
+      } else if (event.hebrew.includes("סוכות") && event.hebrew.includes(")")) {
+        return {
+          description: 'חוה"מ סוכות',
+        };
+      } else if (event.hebrew.includes("סוכות") && event.hebrew.includes("א")) {
+        return {
+          description: "סוכות",
+        };
+      }
+
       return null;
-    } else if (event.hebrew.includes("חנוכה") && (event.hebrew.includes("נרות") || event.hebrew.includes("יום ח"))) {
-      return {
-        description: "חנוכה"
-      };
-    } else if (event.hebrew.includes("חנוכה") && (event.hebrew.includes("נר") || event.hebrew.includes("יום ח"))) {
-      return {
-        description: "ערב חנוכה"
-      };
-    } else if (event.hebrew.includes("פסח") && event.hebrew.includes(")")) {
-      return {
-        description: 'חוה"מ פסח'
-      };
-    } else if (event.hebrew.includes("פסח") && event.hebrew.includes("א")) {
-      return {
-        description: 'פסח'
-      };
-    } else if (event.hebrew.includes("פסח") && event.hebrew.includes("ז")) {
-      return {
-        description: 'שביעי של פסח'
-      };
-    } else if (event.hebrew.includes("ראש השנה") && !event.hebrew.includes("בהמה")) {
-      return {
-        description: "ראש השנה"
-      };
-    } else if (event.hebrew.includes("סוכות") && event.hebrew.includes('ז')) {
-      return {
-        description: 'הושענא רבה'
-      };
-    } else if (event.hebrew.includes("סוכות") && event.hebrew.includes(')')) {
-      return {
-        description: 'חוה"מ סוכות'
-      };
-    } else if (event.hebrew.includes("סוכות") && event.hebrew.includes('א')) {
-      return {
-        description: 'סוכות'
-      };
-    }  
- 
-    return null;
-  }).filter(Boolean); // Filter out null values
+    })
+    .filter(Boolean); // Filter out null values
 
   return newEvents.length > 0 ? newEvents : null;
 }
 
 export const hebrewMonths = [
-  'תשרי',
-  'חשון',
-  'כסלו',
-  'טבת',
-  'שבט',
-  'אדר',
-  'אדר א',
-  'אדר ב',
-  'ניסן',
-  'אייר',
-  'סיוון',
-  'תמוז',
-  'אב',
-  'אלול',
+  "תשרי",
+  "חשון",
+  "כסלו",
+  "טבת",
+  "שבט",
+  "אדר",
+  "אדר א",
+  "אדר ב",
+  "ניסן",
+  "אייר",
+  "סיוון",
+  "תמוז",
+  "אב",
+  "אלול",
 ];
 
 export const hebrewLetters = {
@@ -208,12 +217,13 @@ export const hebrewLetters = {
   30: "ל",
 };
 
-
-
-
 function compareHebrewDates(a, b) {
-  const aIndex = Object.keys(hebrewLetters).findIndex((key) => hebrewLetters[key] === a.deathDate.date);
-  const bIndex = Object.keys(hebrewLetters).findIndex((key) => hebrewLetters[key] === b.deathDate.date);
+  const aIndex = Object.keys(hebrewLetters).findIndex(
+    (key) => hebrewLetters[key] === a.deathDate.date
+  );
+  const bIndex = Object.keys(hebrewLetters).findIndex(
+    (key) => hebrewLetters[key] === b.deathDate.date
+  );
 
   return aIndex - bIndex;
 }
@@ -238,6 +248,40 @@ export function updateListByMonth(niftarArray) {
 
   return result;
 }
+
+export function filterListBySearch(niftarArray, searchValue) {
+  const result = {};
+
+  // Split the search value into individual words
+  const searchWords = searchValue.toLowerCase().split(" ");
+
+  niftarArray.forEach((niftar) => {
+    const { month } = niftar.deathDate;
+
+    // Check if all search words are included in the niftar object
+    const isMatch = searchWords.every((word) =>
+      Object.values(niftar).some((value) => {
+        if (typeof value === "string" || value === "") {
+          // Convert value to lowercase for case-insensitive comparison
+          const lowercasedValue = value.toLowerCase();
+          // Check if the word is included in the value
+          return lowercasedValue.includes(word);
+        }
+        return false;
+      })
+    );
+
+    if (isMatch) {
+      if (!result[month]) {
+        result[month] = [];
+      }
+      result[month].push(niftar);
+    }
+  });
+
+  return result;
+}
+
 
 // // Usage
 
