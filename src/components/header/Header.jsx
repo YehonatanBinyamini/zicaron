@@ -19,9 +19,9 @@ function Header(props) {
   return (
     <header className="header">
       <div className="connect-header">
-    <label className="userName-header">שלום {userName}</label>
+    <label className="userName-header-shalom">שלום {userName}</label>
     <label className="userName-header">|</label>
-    <NavLink className="userName-header" to="./login" onClick={loginHandler}>
+    <NavLink className="userName-header" to="./Login" onClick={loginHandler}>
       התחבר
     </NavLink>
   </div>

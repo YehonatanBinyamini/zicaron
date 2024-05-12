@@ -3,6 +3,7 @@ import RootLayout from "./components/rootLayout/RootLayout";
 import Error from "./pages/errorPage/Error";
 import Home from "./pages/home/Home";
 import NiftarimList from "./pages/niftarimList/NiftarimList";
+import Login from "./pages/login/Login";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "/List", element: <NiftarimList /> },
+      { path: "/Login", element: <Login /> },
     ],
   },
 ]);

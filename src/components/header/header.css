@@ -40,12 +40,15 @@ nav a {
   font-weight: bold;
 }
 
+.userName-header:hover,
+.userName-header.active,
 nav a:hover,
 nav a.active {
   color: rgb(241, 213, 56);
   background-color: var(--headerColor);
 }
 
+.userName-header-shalom,
 .userName-header {
   margin-left: 20px; 
   color: var(--textColor);
