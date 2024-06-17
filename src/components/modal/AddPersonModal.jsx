@@ -23,10 +23,12 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson, title, item }) =>
   const [year, setYear] = useState(item && item.deathDate ? item.deathDate.year : '');
   const [id, setId] = useState(item && item.id ? item.id : '');
   const [errorMessage, setErrorMessage] = useState('')
+  const [constItem, setConstItem] = useState(null)
   const dispatch = useDispatch();
-    
+
   useEffect(() => {
     // Update state when the 'item' prop changes
+    setConstItem(item)
     setFirstName(item && item.firstName ? item.firstName : '');
     setLastName(item && item.lastName ? item.lastName : '');
     setParentsName(item && item.parentsName ? item.parentsName : '');
@@ -35,7 +37,7 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson, title, item }) =>
     setSelectedDate(item && item.deathDate ? item.deathDate.date : '');
     setYear(item && item.deathDate ? item.deathDate.year : '');
     setId(item && item.id ? item.id : '');
-  }, [item]);
+  }, [item, constItem]);
 
   const contentIsValid = () => {
     if(firstName.length === 0){
@@ -97,6 +99,7 @@ const AddPersonModal = ({ isOpen, onRequestClose, onAddPerson, title, item }) =>
         setSelectedMonth("")
         setYear("")
         setErrorMessage("")
+        setConstItem(null)
   }
 
   return (

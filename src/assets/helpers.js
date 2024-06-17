@@ -16,7 +16,7 @@ export const monthOrder = {
 const holidays = {
   "טו בשבט": true,
   "ל״ג בעומר": true,
-  פורים: true,
+  "פורים": true,
   "פורים קטן": true,
   "צום גדליה": true,
   "שמיני עצרת": true,
@@ -30,7 +30,7 @@ const holidays = {
   "פסח שני": true,
   "יום ירושלים": true,
   "ערב שבועות": true,
-  שבועות: true,
+  "שבועות": true,
   "טו באב": true,
   "ערב סוכות": true,
   "ערב פסח": true,
@@ -48,7 +48,6 @@ function getTimeString(date) {
 
 export function setEvents(events) {
   if (events.length === 0) return null;
-
   const newEvents = events
     .map((event) => {
       if (event.hebrew === "פרשת קורח") {
@@ -260,7 +259,7 @@ export function filterListBySearch(niftarArray, searchValue) {
 
     // Check if all search words are included in the niftar object
     const isMatch = searchWords.every((word) =>
-  Object.entries(niftar).some(([key, value]) => {
+    Object.entries(niftar).some(([key, value]) => {
     // Exclude searching in niftar.id
     if (key !== "id" && (typeof value === "string" || value === "")) {
       // Convert value to lowercase for case-insensitive comparison

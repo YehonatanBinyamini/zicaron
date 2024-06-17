@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./header.css";
-// import logo from "../../assets/images/white-logo.png";
+import logo from "../../assets/images/rashi-logo.png";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { authActions } from "../../store/auth";
+import { useNavigate } from "react-router-dom";
+
 function Header(props) {
-  //   const activeColor = "rgb(241, 213, 56)";
-  //   const nonActiveColor = "#eee";
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const userName = "אורח";
+  const [userName, setUserName] = useState("אורח");
 
-  // function styleHandler({ isActive }) {
-  //   return ["nav a", isActive ? "active" : null].filter(Boolean).join(" ");
-  // }
+  useEffect(()=>{
+    if (auth.authIsConnected){
+      setUserName(auth.firstName+" "+auth.lastName);
+    } else {
+      setUserName("אורח");
+    }
+  },[auth])
 
   function loginHandler() {
     //console.log(userName);
+  }
+
+  function logoutHandler(){
+    dispatch(authActions.setAuth({firstName:"", lastName: "", uid: "", authIsConnected: false }));
+    // navigate("./Login");
   }
 
   return (
@@ -21,9 +35,12 @@ function Header(props) {
       <div className="connect-header">
     <label className="userName-header-shalom">שלום {userName}</label>
     <label className="userName-header">|</label>
+    { !auth.authIsConnected ? 
     <NavLink className="userName-header" to="./Login" onClick={loginHandler}>
       התחבר
-    </NavLink>
+    </NavLink> :
+    <NavLink className="userName-header" to="./Login" onClick={logoutHandler}>התנתק</NavLink>
+    }
   </div>
   <nav className="nav">
     <NavLink to="./ContactUs">צור קשר</NavLink>
@@ -32,7 +49,7 @@ function Header(props) {
   </nav>
     <div className="logo-container">
       <Link to="./">
-        {/* <img className="logo" src={logo} alt="logo" /> */}
+        <img className="logo" src={logo} alt="logo" />
       </Link>
     </div>
   

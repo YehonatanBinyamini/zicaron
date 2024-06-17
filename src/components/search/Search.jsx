@@ -28,9 +28,9 @@ export default function SearchComponent({
 
   return (
     <div className="search">
-      <div className="search-icon" onClick={handleSearchClick}>
+      {/* <div className="search-icon" onClick={handleSearchClick}>
         <Search />
-      </div>
+      </div> */}
       
       <input
         type="text"

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import Niftar from '../../models/Niftar'
 import AddPersonModal from '../../components/modal/AddPersonModal';
 import MyAlert from '../../components/alert/MyAlert';
-import { hebrewMonths, filterListBySearch } from '../../assets/helpers';
+import { hebrewMonths, hebrewLetters, filterListBySearch } from '../../assets/helpers';
 import SwalAlert from '../../components/alert/SwalAlert';
 import Search from "../../components/search/Search";
 
@@ -18,8 +18,8 @@ export default function NiftarimList() {
   const [searchValue, setSearchValue] = useState('');
   const [filteredNiftarim, setFilteredNiftarim] = useState({});
   const niftarim = useSelector(state => state.niftarim.list); 
-  //TODO:: check why if niftarim = null it crashed
   const niftarArray = useSelector(state => state.niftarim.data);
+  const auth = useSelector(state => state.auth);
 
   useEffect(()=>{
     // Object.keys(niftarim).length === 0 && setFilteredNiftarim(getNiftarimObjects(niftarim)) 
@@ -27,23 +27,27 @@ export default function NiftarimList() {
   
   },[niftarim,niftarArray])
 
-  useEffect(() => {
-    if (Object.keys(niftarim).length === 0) {
-      if (searchValue.length > 0) {
-        const result = filterListBySearch(niftarArray, searchValue);
-        setFilteredNiftarim(getNiftarimObjects(result));
-      } else {
-        setFilteredNiftarim(getNiftarimObjects(niftarim));
-      }
-    }
-  }, [niftarim, niftarArray, searchValue]);
+  // useEffect(() => {
+  //   if (Object.keys(niftarim).length === 0) {
+  //     if (searchValue.length > 0) {
+  //       const result = filterListBySearch(niftarArray, searchValue);
+  //       console.log("@@@@@"+result)
+  //       setFilteredNiftarim(getNiftarimObjects(result));
+  //     } else {
+  //       console.log("קטן מ1")
+
+  //       setFilteredNiftarim(getNiftarimObjects(niftarim));
+  //     }
+  //   }
+  // }, [niftarim, niftarArray, searchValue]);
   
 
   const handleSearchChange = (value) => {
     setSearchValue(value);
     // setFilteredNiftarim(getNiftarimObjects({תשרי: niftarim['תשרי']}))
     const result = filterListBySearch(niftarArray, value)
-      setFilteredNiftarim(getNiftarimObjects(result))
+    const sortedNiftarim = getNiftarimObjects(result)
+      setFilteredNiftarim(sortedNiftarim)
     };
 
   const handleSearchClick = () => {
@@ -54,7 +58,6 @@ export default function NiftarimList() {
 
   function handleAddPerson(niftarObject){
     // const newNiftar = niftarim[niftarObject.deathDate.month].filter(niftar => niftar.id === niftarObject.id)
-    console.log(niftarObject);
     const newNiftarFullName = `${niftarObject.firstName} ${niftarObject.lastName}`;
     setNewNiftarFullName(newNiftarFullName);
     if (title === 'הוספת שם למאגר'){
@@ -63,7 +66,6 @@ export default function NiftarimList() {
       setAlertText(`הפרטים של ${newNiftarFullName} נערכו בההצלחה`);
 
     }
-    // console.log("handleAddPerson")
     setIsAlertOn(true)
     setTimeout(() => {
       setIsAlertOn(false)
@@ -73,34 +75,57 @@ export default function NiftarimList() {
   };
   
 
-  function getNiftarimObjects(niftarim){
+  function getNiftarimObjects(niftarim) {
     const niftarimObjects = Object.fromEntries(
       Object.entries(niftarim).map(([monthName, items]) => [
-          monthName,
-          items.map(
-            (item) =>
-              new Niftar(
-                item.firstName,
-                item.lastName,
-                item.parentsName,
-                item.isMale,
-                item.deathDate,
-                item.id
-              )
-          ),
-        ])
-      );
-      return sortNiftarim(niftarimObjects);
+        monthName,
+        items.map(
+          (item) =>
+            new Niftar(
+              item.firstName,
+              item.lastName,
+              item.parentsName,
+              item.isMale,
+              item.deathDate,
+              item.id
+            )
+        ),
+      ])
+    );
+  
+    const sortedNiftarim = sortNiftarim(niftarimObjects);
+    return sortedNiftarim;
+  }
+  
+  function getMonthIndex(monthName) {
+    return hebrewMonths.indexOf(monthName);
+  }
+  
+  function getDateIndex(hebrewDate) {
+    for (let [key, value] of Object.entries(hebrewLetters)) {
+      if (value === hebrewDate) {
+        return parseInt(key, 10);
+      }
     }
-
-      function getMonthIndex(monthName) {
-        return hebrewMonths.indexOf(monthName);
-      }
-      function sortNiftarim(niftarimObjects){
-        return Object.fromEntries(
-          Object.entries(niftarimObjects).sort(([a], [b]) => getMonthIndex(a) - getMonthIndex(b))
-        );
-      }
+    return -1; // Return -1 if the date is not found
+  }
+  
+  function sortNiftarim(niftarimObjects) {
+    const sortedByMonth = Object.fromEntries(
+      Object.entries(niftarimObjects).sort(
+        ([a], [b]) => getMonthIndex(a) - getMonthIndex(b)
+      )
+    );
+  
+    for (let month in sortedByMonth) {
+      sortedByMonth[month].sort((a, b) => {
+        const dateA = getDateIndex(a.deathDate.date);
+        const dateB = getDateIndex(b.deathDate.date);
+        return dateA - dateB;
+      });
+    }
+    return sortedByMonth;
+  }
 
       function handleAddNiftar(){
         setTitle("הוספת שם למאגר"); 
@@ -123,7 +148,7 @@ export default function NiftarimList() {
             onSearchChange={handleSearchChange}
             onSearchClick={handleSearchClick}
             />
-            <button className='add-button' onClick={()=>handleAddNiftar()}>הוספה</button>
+            {auth.authIsConnected && <button className='add-button' onClick={()=>handleAddNiftar()}>הוספה</button>}
           </div>
           {/* {filteredNiftarim.length > 0 && ( 
           // <div className="result-container">
@@ -153,10 +178,10 @@ export default function NiftarimList() {
                 </div>
                 <label className="label-rest-string">{item.getDeathDate()}</label>
                 
-                <div className='buttons-position'>
+                {auth.authIsConnected && <div className='buttons-position'>
                   <SwalAlert item={item}/>
                   <button className='edit-button' onClick={() => handleEditNiftar(item)}>ערוך</button>
-                </div>
+                </div>}
               </div>
               ))}
             </div>)
